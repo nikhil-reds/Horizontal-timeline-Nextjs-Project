@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+
+model Year {
+  id           Int           @id @default(autoincrement())
+  year         Int           @unique
+  about        String?
+  achievements Achievement[]
+  assets       Asset[]
+  createdAt    DateTime      @default(now())
+}
+
+model Achievement {
+  id        Int      @id @default(autoincrement())
+  title     String
+  category  String
+  date      DateTime
+  yearId    Int
+  year      Year     @relation(fields: [yearId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Asset {
+  id        Int      @id @default(autoincrement())
+  url       String
+  caption   String?
+  month     Int
+  yearId    Int
+  year      Year     @relation(fields: [yearId], references: [id])
+  createdAt DateTime @default(now())
+}

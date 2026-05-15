@@ -1,7 +1,6 @@
 import { prisma } from "./lib/prisma";
 import Header from "./components/Header";
 import WorkflowCircle from "./components/WorkflowCircle";
-import YearDetail from "./components/YearDetail";
 
 const page = async ({
   searchParams,
@@ -19,12 +18,9 @@ const page = async ({
     : years[0]?.year || 0;
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <main className="min-h-screen bg-white text-gray-900">
       <Header />
-      <div className="space-y-8">
-        <WorkflowCircle years={years} selectedYear={selectedYear} />
-        <YearDetail selectedYear={selectedYear} />
-      </div>
+      <WorkflowCircle years={years} selectedYear={selectedYear} />
     </main>
   );
 };

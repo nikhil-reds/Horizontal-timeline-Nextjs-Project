@@ -201,7 +201,7 @@ function ContentPanel({ yearId }: { yearId: number | undefined }) {
 
         {tab === "gallery" && <GalleryPanel />}
         {tab === "achievement" && <Achievements yearId={yearId} />}
-        {tab === "about" && <AboutYear yearId={yearId} />}
+        {tab === "about" && <AboutYear yearId={yearId} onClose={() => setTab(null)} />}
       </div>
     </div>
   );

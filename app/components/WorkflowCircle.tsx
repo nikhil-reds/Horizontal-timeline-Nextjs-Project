@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import Achievements from "./Achievements";
 import AboutYear from "./AboutYear";
@@ -47,34 +48,19 @@ function MediaPopup({
   activeIndex: number;
   onClose: () => void;
 }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const activeItem = items[activeIndex];
 
-  return (
+  const content = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md"
       onClick={onClose}
     >
-      {/* Blurred thumbnails in background */}
-      <div className="absolute inset-0 flex flex-wrap gap-4 items-center justify-center p-10 pointer-events-none">
-        {items.map((item, i) =>
-          i === activeIndex ? null : (
-            <div
-              key={item.id}
-              className="w-32 h-24 rounded-xl overflow-hidden opacity-40 blur-sm scale-95"
-            >
-              <img
-                src={"src" in item ? item.src : item.thumb}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )
-        )}
-      </div>
-
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-
       {/* Active media */}
       <div
         className="relative z-10 w-full max-w-2xl mx-6"
@@ -82,22 +68,27 @@ function MediaPopup({
       >
         <button
           onClick={onClose}
-          className="absolute -top-4 -right-4 w-9 h-9 bg-linear-to-br from-indigo-500 to-violet-600 rounded-full flex items-center justify-center shadow-lg hover:from-indigo-600 hover:to-violet-700 transition-all z-20"
+          className="absolute top-4 right-4 w-9 h-9 bg-linear-to-br from-indigo-500 to-violet-600 rounded-full flex items-center justify-center shadow-lg hover:from-indigo-600 hover:to-violet-700 transition-all z-50 hover:scale-110 active:scale-95"
+          aria-label="Close modal"
         >
           <X className="w-4 h-4 text-white" />
         </button>
 
         {type === "image" ? (
-          <>
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-white/20 bg-slate-950 flex flex-col items-center justify-center">
             <img
               src={(activeItem as (typeof DEMO_IMAGES)[0]).src}
-              alt={(activeItem as (typeof DEMO_IMAGES)[0]).caption}
-              className="w-full rounded-2xl shadow-2xl ring-1 ring-white/20"
+              alt={(activeItem as (typeof DEMO_IMAGES)[0]).caption || "Gallery image"}
+              className="w-full max-h-[80vh] object-contain rounded-2xl"
             />
-            <p className="text-center text-white font-medium mt-3 drop-shadow">
-              {(activeItem as (typeof DEMO_IMAGES)[0]).caption}
-            </p>
-          </>
+            {activeItem.caption && (
+              <div className="absolute bottom-0 left-0 right-0 bg-black/70 backdrop-blur-xs px-6 py-3 text-center rounded-b-2xl">
+                <p className="text-white font-semibold text-sm tracking-wide">
+                  {(activeItem as (typeof DEMO_IMAGES)[0]).caption}
+                </p>
+              </div>
+            )}
+          </div>
         ) : (
           <div className="w-full aspect-video rounded-2xl shadow-2xl bg-linear-to-br from-slate-800 to-slate-900 flex flex-col items-center justify-center gap-3 ring-1 ring-white/10">
             <div className="w-16 h-16 rounded-full bg-linear-to-br from-indigo-500/30 to-violet-600/30 border border-white/20 flex items-center justify-center">
@@ -111,6 +102,9 @@ function MediaPopup({
       </div>
     </div>
   );
+
+  if (!mounted) return null;
+  return createPortal(content, document.body);
 }
 
 /* ── Gallery panel ─────────────────────────────────────────── */

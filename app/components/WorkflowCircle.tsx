@@ -81,7 +81,7 @@ function MediaPopup({
               alt={(activeItem as (typeof DEMO_IMAGES)[0]).caption || "Gallery image"}
               className="w-full max-h-[80vh] object-contain rounded-2xl"
             />
-            {activeItem.caption && (
+            {(activeItem as (typeof DEMO_IMAGES)[0]).caption && (
               <div className="absolute bottom-0 left-0 right-0 bg-black/70 backdrop-blur-xs px-6 py-3 text-center rounded-b-2xl">
                 <p className="text-white font-semibold text-sm tracking-wide">
                   {(activeItem as (typeof DEMO_IMAGES)[0]).caption}

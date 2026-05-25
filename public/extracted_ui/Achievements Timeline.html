@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Foundry — A Timeline of Achievements</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  :root{
+    --rail-w: 2px;
+    --accent: var(--color-amber-400);
+    --accent-soft: #f3a85c66;
+    --ink-1: #0a2540;
+    --ink-2: #061a30;
+    --ink-3: #04111f;
+    --grid: rgba(91,155,220,0.07);
+    --line: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.18);
+    --text-1: #e7eef7;
+    --text-2: #a6b4c6;
+    --text-3: #6c7c92;
+  }
+  html, body { background: var(--ink-2); color: var(--text-1); }
+  body{
+    font-family: var(--font-text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: var(--accent); color: var(--ink-2); }
+
+  /* ---- Fixed scenic backdrop ---- */
+  .backdrop{
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(1100px 700px at 75% 8%, rgba(46,116,191,0.18), transparent 60%),
+      radial-gradient(900px 600px at 10% 95%, rgba(232,138,22,0.10), transparent 65%),
+      linear-gradient(180deg, #0a2540 0%, #061a30 55%, #04101e 100%);
+  }
+  .backdrop::after{
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 0%, transparent 85%);
+  }
+  #particles{
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    opacity: 0.85;
+  }
+
+  /* ---- Top chrome ---- */
+  .topbar{
+    position: fixed; inset: 0 0 auto 0; z-index: 30;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    backdrop-filter: blur(8px);
+    background: linear-gradient(180deg, rgba(6,26,48,0.7), rgba(6,26,48,0));
+  }
+  .brand{
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 600; letter-spacing: -0.02em;
+    color: var(--text-1);
+    font-size: 15px;
+  }
+  .brand .mark{
+    width: 26px; height: 26px; border-radius: 6px;
+    background: conic-gradient(from 220deg, var(--color-steel-400), var(--accent), var(--color-steel-400));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 0 24px rgba(232,138,22,0.35);
+    position: relative;
+  }
+  .brand .mark::after{
+    content:""; position:absolute; inset: 6px;
+    background: var(--ink-2);
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .topbar .meta{
+    display: flex; align-items: center; gap: 18px;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .topbar .meta .dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+
+  /* ---- Hero ---- */
+  .hero{
+    position: relative; z-index: 5;
+    min-height: 100vh;
+    display: grid; place-items: center;
+    padding: 120px 32px 60px;
+    text-align: center;
+  }
+  .hero .eyebrow{
+    color: var(--accent);
+    letter-spacing: 0.28em; font-size: 11px;
+    font-weight: 600; text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero h1{
+    font-family: var(--font-display);
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+    color: var(--text-1);
+    max-width: 16ch;
+    margin: 0 auto 24px;
+  }
+  .hero h1 em{
+    font-style: normal;
+    background: linear-gradient(180deg, #f3a85c 0%, #c46a00 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p{
+    max-width: 56ch; margin: 0 auto;
+    font-size: 17px; line-height: 1.55;
+    color: var(--text-2);
+  }
+  .hero .scroll-cue{
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--text-3); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  }
+  .hero .scroll-cue .line{
+    width: 1px; height: 56px; background: linear-gradient(180deg, transparent, var(--accent));
+    animation: cuePulse 2.4s ease-in-out infinite;
+  }
+  @keyframes cuePulse{
+    0%,100%{ transform: scaleY(0.6); opacity: 0.4; transform-origin: top; }
+    50%{ transform: scaleY(1); opacity: 1; transform-origin: top; }
+  }
+
+  /* ---- Timeline section ---- */
+  .timeline{
+    position: relative; z-index: 5;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 80px 32px 200px;
+  }
+
+  /* Sticky year heads-up */
+  .hud{
+    position: sticky; top: 0;
+    padding-top: 80px;
+    margin-bottom: -240px;  /* lift content up under hud */
+    z-index: 6;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    align-items: start;
+    gap: 48px;
+  }
+  .hud .era{
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .hud .year{
+    font-family: var(--font-display);
+    font-size: 132px;
+    line-height: 0.9;
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    color: var(--text-1);
+    -webkit-text-stroke: 1px rgba(231,238,247,0.0);
+    background: linear-gradient(180deg, #ffffff 0%, #5b9bdc 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    transition: opacity 0.35s ease;
+  }
+  .hud .year-row{
+    display: flex; align-items: baseline; gap: 18px;
+  }
+  .hud .year-row .delta{
+    font-family: var(--font-mono);
+    font-size: 13px; color: var(--accent);
+    letter-spacing: 0.04em;
+    padding: 4px 8px;
+    border: 1px solid var(--accent-soft);
+    border-radius: 999px;
+    background: rgba(232,138,22,0.08);
+  }
+  .hud .progress{
+    margin-top: 14px;
+    width: 220px; height: 2px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 2px; overflow: hidden;
+  }
+  .hud .progress > i{
+    display: block; height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--color-steel-300), var(--accent));
+  }
+  .hud .counter{
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--text-3); letter-spacing: 0.18em;
+  }
+
+  /* Items */
+  .items{
+    position: relative;
+    display: flex; flex-direction: column;
+    gap: 24px;
+    padding-top: 280px; /* room for hud */
+  }
+  /* Vertical rail */
+  .items::before{
+    content:"";
+    position: absolute;
+    left: calc(220px + 24px);
+    top: 0; bottom: 0;
+    width: var(--rail-w);
+    background: linear-gradient(180deg, transparent 0%, var(--line) 8%, var(--line) 92%, transparent 100%);
+  }
+  /* Progress overlay rail */
+  #railFill{
+    position: absolute;
+    left: calc(220px + 24px);
+    top: 0;
+    width: var(--rail-w);
+    height: 0%;
+    background: linear-gradient(180deg, var(--color-steel-300), var(--accent) 60%, var(--accent));
+    box-shadow: 0 0 16px var(--accent-soft);
+    pointer-events: none;
+    border-radius: 2px;
+  }
+
+  .item{
+    position: relative;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    align-items: start;
+    padding: 80px 0;
+    opacity: 0.35;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.6,.2,1);
+  }
+  .item.is-visible{ opacity: 1; transform: translateY(0); }
+
+  .item .stamp{
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-3);
+    padding-top: 6px;
+  }
+  .item .stamp .y{
+    display: block;
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+
+  .item .body{
+    position: relative;
+    padding-left: 48px;
+  }
+  /* Node dot anchored on the rail */
+  .item .body::before{
+    content:"";
+    position: absolute;
+    left: -8px; top: 14px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    border: 2px solid var(--line-strong);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+    z-index: 2;
+  }
+  .item.is-visible .body::before{
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(232,138,22,0.12), 0 0 24px var(--accent-soft);
+  }
+  /* Small connector tick */
+  .item .body::after{
+    content:"";
+    position: absolute;
+    left: 10px; top: 22px;
+    width: 36px; height: 1px;
+    background: var(--line);
+  }
+
+  .item .card{
+    background: linear-gradient(180deg, rgba(19,52,95,0.55), rgba(10,37,64,0.45));
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 32px 32px;
+    backdrop-filter: blur(6px);
+    position: relative;
+    overflow: hidden;
+  }
+  .item .card::before{
+    content:""; position: absolute; inset: 0;
+    background:
+      radial-gradient(380px 160px at 100% 0%, rgba(232,138,22,0.10), transparent 60%),
+      radial-gradient(420px 200px at 0% 100%, rgba(91,155,220,0.10), transparent 60%);
+    pointer-events: none;
+  }
+  .item .tag{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent);
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--accent-soft);
+    background: rgba(232,138,22,0.08);
+    margin-bottom: 18px;
+  }
+  .item .tag .pulse{ width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity: 1; transform: scale(1);} 50%{ opacity:.4; transform: scale(.7);} }
+
+  .item h2{
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    color: var(--text-1);
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .item p{
+    font-size: 16px; line-height: 1.6;
+    color: var(--text-2);
+    max-width: 60ch;
+    text-wrap: pretty;
+  }
+  .item .stats{
+    display: flex; flex-wrap: wrap; gap: 28px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .item .stat .k{
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .item .stat .v{
+    margin-top: 6px;
+    font-family: var(--font-display);
+    font-size: 22px; letter-spacing: -0.02em;
+    color: var(--text-1);
+    font-variant-numeric: tabular-nums lining-nums;
+    font-weight: 500;
+  }
+  .item .stat .v em{ font-style: normal; color: var(--accent); }
+
+  /* Ghost years drifting behind the card column */
+  .ghost-years{
+    position: absolute;
+    left: calc(220px + 48px + 80px);
+    top: 0; bottom: 0;
+    width: 220px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+  }
+  .ghost-years span{
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: rgba(91,155,220,0.07);
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  /* ---- Right-edge mini-timeline ---- */
+  .mini{
+    position: fixed;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 25;
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 16px 14px;
+    border: 1px solid var(--line);
+    background: rgba(6,26,48,0.55);
+    backdrop-filter: blur(10px);
+    border-radius: 999px;
+  }
+  .mini .node{
+    display: flex; align-items: center; gap: 10px;
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.16em;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    background: none; border: 0; padding: 0;
+    font-weight: inherit;
+    text-align: left;
+  }
+  .mini .node .pip{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text-3);
+    transition: all 0.3s ease;
+  }
+  .mini .node.is-active{ color: var(--text-1); }
+  .mini .node.is-active .pip{
+    background: var(--accent); box-shadow: 0 0 0 4px rgba(232,138,22,0.16), 0 0 12px var(--accent);
+    transform: scale(1.2);
+  }
+  .mini .node .label{
+    opacity: 0; transform: translateX(-4px);
+    transition: opacity 0.25s, transform 0.25s;
+    width: 0; overflow: hidden;
+    white-space: nowrap;
+  }
+  .mini .node.is-active .label{ opacity: 1; transform: translateX(0); width: auto; }
+
+  /* ---- Outro ---- */
+  .outro{
+    position: relative; z-index: 5;
+    padding: 200px 32px 160px;
+    text-align: center;
+  }
+  .outro .eyebrow{ color: var(--accent); letter-spacing: 0.28em; font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 24px; display: block; }
+  .outro h2{
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05; letter-spacing: -0.03em; font-weight: 600;
+    max-width: 18ch; margin: 0 auto 20px;
+    color: var(--text-1);
+  }
+  .outro p{ max-width: 50ch; margin: 0 auto 36px; color: var(--text-2); font-size: 16px; line-height: 1.6; }
+  .outro .cta{
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--ink-2);
+    font-weight: 600; font-size: 14px; letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 32px rgba(232,138,22,0.35);
+  }
+  .outro .cta:hover{ transform: translateY(-1px); box-shadow: 0 12px 40px rgba(232,138,22,0.45); }
+  .outro .cta .arrow{ width: 16px; height: 16px; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 920px){
+    .hud{ grid-template-columns: 1fr; gap: 8px; padding-top: 100px; margin-bottom: -180px; }
+    .hud .year{ font-size: 88px; }
+    .items{ padding-top: 240px; }
+    .items::before, #railFill{ left: 10px; }
+    .item{ grid-template-columns: 1fr; gap: 12px; padding: 56px 0 56px 36px; }
+    .item .body{ padding-left: 0; }
+    .item .body::before{ left: -32px; top: 8px; }
+    .item .body::after{ display: none; }
+    .ghost-years{ display: none; }
+    .mini{ display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+<canvas id="particles"></canvas>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="mark" aria-hidden="true"></div>
+    <span>Foundry</span>
+    <span style="color: var(--text-3); font-weight: 400; margin-left: 6px;">/ Achievements</span>
+  </div>
+  <div class="meta">
+    <span class="dot"></span>
+    <span>Est. 2008 — A 18-Year Record</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">Foundry — Eighteen Years In</div>
+    <h1>Built quietly, <em>at scale</em>.</h1>
+    <p>From a four-person controls team in a shared trailer to the operating system behind two hundred billion dollars of capital projects. The work, year by year.</p>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<section class="timeline" id="timeline">
+  <div class="hud" aria-hidden="true">
+    <div>
+      <div class="era" id="hudEra">First chapter · 2008</div>
+      <div class="progress"><i id="hudProgress"></i></div>
+      <div class="counter" id="hudCounter">01 / 08</div>
+    </div>
+    <div class="year-row">
+      <div class="year" id="hudYear">2008</div>
+      <div class="delta" id="hudDelta">— founding</div>
+    </div>
+  </div>
+
+  <div class="ghost-years" id="ghostYears"></div>
+
+  <div class="items" id="items">
+
+    <article class="item" data-year="2008" data-era="Founding" data-delta="— founding">
+      <div class="stamp">CH. 01<span class="y">2008</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Origin</div>
+          <h2>A controls team forms in a portable trailer outside Baytown.</h2>
+          <p>Four engineers, one spreadsheet, and a refinery turnaround that nobody else wanted. Foundry began as a service contract — keep the schedule honest, keep the procurement log clean, keep the field reporting up to date.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Headcount</div><div class="v">4</div></div>
+            <div class="stat"><div class="k">First project</div><div class="v">Refinery TAR-08</div></div>
+            <div class="stat"><div class="k">Office</div><div class="v">1× trailer</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2011" data-era="First product" data-delta="+ first software release">
+      <div class="stamp">CH. 02<span class="y">2011</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Product</div>
+          <h2>Field Log ships — the spreadsheet finally leaves the trailer.</h2>
+          <p>What started as an internal workbook for daily reports becomes Foundry's first piece of software. Three EPC contractors sign on within six months. The product roadmap is written in pencil, on the back of a P&amp;ID.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Customers</div><div class="v">3</div></div>
+            <div class="stat"><div class="k">Reports filed</div><div class="v"><em>14,200</em></div></div>
+            <div class="stat"><div class="k">Series A</div><div class="v">$6.4M</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2014" data-era="Across the desk" data-delta="+ procurement, schedule">
+      <div class="stamp">CH. 03<span class="y">2014</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Expansion</div>
+          <h2>Procurement and Schedule launch. One platform, three desks.</h2>
+          <p>The PO log lands in the same database as the field report. Project controllers stop reconciling between Primavera, Excel and email. Foundry now sits between the trailer and the home office on every project it touches.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Active projects</div><div class="v">42</div></div>
+            <div class="stat"><div class="k">POs tracked</div><div class="v">61,800</div></div>
+            <div class="stat"><div class="k">Team</div><div class="v">38</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2017" data-era="Going global" data-delta="+ EMEA, APAC">
+      <div class="stamp">CH. 04<span class="y">2017</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Scale</div>
+          <h2>Rotterdam and Singapore come online — coverage follows the shipping lanes.</h2>
+          <p>The first multi-currency, multi-language deployment lands with a Dutch midstream operator. Within eighteen months Foundry runs the controls cadence on projects across nineteen countries and four continents.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Countries</div><div class="v">19</div></div>
+            <div class="stat"><div class="k">Languages</div><div class="v">7</div></div>
+            <div class="stat"><div class="k">Series C</div><div class="v">$84M</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2020" data-era="Crisis, then clarity" data-delta="× pandemic year">
+      <div class="stamp">CH. 05<span class="y">2020</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Resilience</div>
+          <h2>Site offices empty. Foundry Field carries the load.</h2>
+          <p>The mobile app — quietly in development for two years — is pulled forward and shipped in eleven weeks. Superintendents file punch lists from their phones at half-capacity sites. Not a single customer cancels.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Field installs</div><div class="v">21,400</div></div>
+            <div class="stat"><div class="k">Uptime</div><div class="v"><em>99.98%</em></div></div>
+            <div class="stat"><div class="k">Retention</div><div class="v">100%</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2022" data-era="The data layer" data-delta="+ Foundry Intelligence">
+      <div class="stamp">CH. 06<span class="y">2022</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Intelligence</div>
+          <h2>Variance forecasting goes live across every active baseline.</h2>
+          <p>Twelve years of schedule and cost history finally pay a dividend. Foundry Intelligence forecasts EVM variance four weeks out at a 86% confidence interval. The first early-warning emails arrive in controllers' inboxes on a Tuesday.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Models in prod</div><div class="v">11</div></div>
+            <div class="stat"><div class="k">Forecast accuracy</div><div class="v"><em>86%</em></div></div>
+            <div class="stat"><div class="k">Hours saved / wk</div><div class="v">3,200</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2024" data-era="Capital under management" data-delta="$ crossed $200B">
+      <div class="stamp">CH. 07<span class="y">2024</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Milestone</div>
+          <h2>$200B of capital projects now run through Foundry.</h2>
+          <p>Two-thirds of the Engineering News-Record Top 100 sit on the platform. The blueprint view — the one drawn on a whiteboard in 2009 — quietly becomes the way most of the industry plans a turnaround.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">CAPEX on platform</div><div class="v">$200B</div></div>
+            <div class="stat"><div class="k">ENR Top-100</div><div class="v">68 / 100</div></div>
+            <div class="stat"><div class="k">Active users</div><div class="v">141,000</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-year="2026" data-era="What's next" data-delta="→ chapter eight">
+      <div class="stamp">CH. 08<span class="y">2026</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="tag"><span class="pulse"></span>Next</div>
+          <h2>One operating model for every project, from FEED to handover.</h2>
+          <p>This year we close the last seam — engineering and field on a single graph, with every RFI, change order and material movement priced to a live baseline. Eighteen years of work, one cadence.</p>
+          <div class="stats">
+            <div class="stat"><div class="k">Roadmap</div><div class="v">Unified graph</div></div>
+            <div class="stat"><div class="k">Beta partners</div><div class="v">14</div></div>
+            <div class="stat"><div class="k">Ship</div><div class="v">Q4 · 2026</div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div id="railFill"></div>
+</section>
+
+<aside class="mini" id="mini" aria-hidden="true"></aside>
+
+<section class="outro">
+  <span class="eyebrow">Chapter Nine</span>
+  <h2>The next ten years are <span style="color: var(--accent);">harder</span>. We're built for it.</h2>
+  <p>Grid build-outs, gigafactories, transmission corridors, a new generation of refineries. The cadence we built doesn't get easier — but it does scale.</p>
+  <a class="cta" href="#">
+    Read the full report
+    <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</section>
+
+<script>
+/* ============================================================
+   Particle field — calm, drifting points
+   ============================================================ */
+(() => {
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let w, h, dpr, points;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = c.width = innerWidth * dpr;
+    h = c.height = innerHeight * dpr;
+    c.style.width = innerWidth + 'px';
+    c.style.height = innerHeight + 'px';
+    const count = Math.round((innerWidth * innerHeight) / 14000);
+    points = Array.from({length: count}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: (Math.random() * 1.4 + 0.2) * dpr,
+      vx: (Math.random() - 0.5) * 0.12 * dpr,
+      vy: (Math.random() - 0.5) * 0.12 * dpr,
+      a: Math.random() * 0.6 + 0.15,
+      twinkle: Math.random() * Math.PI * 2,
+    }));
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  function tick(t){
+    ctx.clearRect(0, 0, w, h);
+    for (const p of points){
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      const alpha = p.a * (0.7 + 0.3 * Math.sin(p.twinkle + t * 0.0012));
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(180, 210, 240, ${alpha})`;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ============================================================
+   Timeline behavior: HUD update, rail fill, item reveals, mini-nav
+   ============================================================ */
+(() => {
+  const items = [...document.querySelectorAll('.item')];
+  const hudYear = document.getElementById('hudYear');
+  const hudEra = document.getElementById('hudEra');
+  const hudDelta = document.getElementById('hudDelta');
+  const hudCounter = document.getElementById('hudCounter');
+  const hudProgress = document.getElementById('hudProgress');
+  const railFill = document.getElementById('railFill');
+  const mini = document.getElementById('mini');
+  const ghost = document.getElementById('ghostYears');
+
+  // Build mini-nav
+  items.forEach((el, i) => {
+    const y = el.dataset.year;
+    const node = document.createElement('button');
+    node.type = 'button';
+    node.className = 'node';
+    node.dataset.idx = i;
+    node.innerHTML = `<span class="pip"></span><span class="label">${y}</span>`;
+    node.addEventListener('click', () => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    mini.appendChild(node);
+  });
+  const miniNodes = [...mini.querySelectorAll('.node')];
+
+  // Build ghost years (drifting background numerals)
+  items.forEach((el, i) => {
+    const span = document.createElement('span');
+    span.textContent = el.dataset.year;
+    const fontSize = 220 + (i % 3) * 30;
+    span.style.fontSize = fontSize + 'px';
+    span.style.right = ((i % 2 === 0) ? -60 : -120) + 'px';
+    // anchor will be set after layout
+    span.dataset.idx = i;
+    ghost.appendChild(span);
+  });
+  function layoutGhosts(){
+    const ghostSpans = ghost.querySelectorAll('span');
+    const sectionTop = document.getElementById('timeline').getBoundingClientRect().top + scrollY;
+    ghostSpans.forEach((span, i) => {
+      const el = items[i];
+      const top = el.getBoundingClientRect().top + scrollY - sectionTop;
+      span.style.top = (top + 40) + 'px';
+    });
+  }
+
+  let lastActive = -1;
+  function update(){
+    const viewH = innerHeight;
+    const midline = viewH * 0.45;
+
+    // pick active item: closest to midline whose top is <= midline
+    let active = 0;
+    for (let i = 0; i < items.length; i++){
+      const r = items[i].getBoundingClientRect();
+      if (r.top <= midline) active = i;
+    }
+
+    // visibility
+    items.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const visible = r.top < viewH * 0.85 && r.bottom > viewH * 0.1;
+      el.classList.toggle('is-visible', visible);
+    });
+
+    // hud
+    const cur = items[active];
+    if (active !== lastActive){
+      hudYear.style.opacity = 0;
+      setTimeout(() => {
+        hudYear.textContent = cur.dataset.year;
+        hudEra.textContent = `Ch. ${String(active + 1).padStart(2,'0')} · ${cur.dataset.era}`;
+        hudDelta.textContent = cur.dataset.delta;
+        hudCounter.textContent = `${String(active + 1).padStart(2,'0')} / ${String(items.length).padStart(2,'0')}`;
+        hudYear.style.opacity = 1;
+      }, 120);
+      miniNodes.forEach((n, i) => n.classList.toggle('is-active', i === active));
+      lastActive = active;
+    }
+    hudProgress.style.width = (((active + 1) / items.length) * 100) + '%';
+
+    // rail fill
+    const itemsEl = document.getElementById('items');
+    const rect = itemsEl.getBoundingClientRect();
+    const total = rect.height;
+    const passed = Math.min(Math.max(midline - rect.top, 0), total);
+    railFill.style.height = (passed / total * 100) + '%';
+  }
+
+  function onScroll(){ requestAnimationFrame(update); }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', () => { layoutGhosts(); update(); });
+  window.addEventListener('load', () => { layoutGhosts(); update(); });
+  layoutGhosts();
+  update();
+})();
+</script>
+
+</body>
+</html>

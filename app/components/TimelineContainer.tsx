@@ -2,6 +2,23 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+type AwardIconName =
+  | "trophy"
+  | "medal"
+  | "star"
+  | "ribbon"
+  | "building"
+  | "lightbulb"
+  | "globe"
+  | "shield"
+  | "sparkles";
+
+interface AwardItem {
+  icon: AwardIconName;
+  name: string;
+  category: string;
+}
+
 // Fallback timeline data for Rubenius Interiors — sourced from rubenius.in awards & milestones
 const RUBENIUS_FALLBACKS: Record<
   number,
@@ -12,6 +29,7 @@ const RUBENIUS_FALLBACKS: Record<
     title: string;
     description: string;
     stats: Array<{ label: string; value: string }>;
+    awards?: AwardItem[];
   }
 > = {
   2005: {
@@ -39,6 +57,10 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Region", value: "Karnataka" },
       { label: "Also", value: "Nispana" },
     ],
+    awards: [
+      { icon: "trophy",    name: "IQA Award",           category: "Excellence in Interior Designing Services — Karnataka" },
+      { icon: "lightbulb", name: "Nispana Innovative",  category: "Sustainable Smart Cities Innovations" },
+    ],
   },
   2017: {
     era: "Residential at scale",
@@ -51,6 +73,10 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "FOAID", value: "Best Villa" },
       { label: "Recognition", value: "ET Top 5" },
       { label: "Theme", value: "Smart Green" },
+    ],
+    awards: [
+      { icon: "trophy", name: "FOAID Awards",                    category: "Best Residential Villa Large" },
+      { icon: "ribbon", name: "ET Smart Green Summit",           category: "Top 5 Smart Green Workplaces" },
     ],
   },
   2018: {
@@ -65,6 +91,9 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Scope", value: "India" },
       { label: "Discipline", value: "Retail" },
     ],
+    awards: [
+      { icon: "trophy", name: "FOAID Awards", category: "Best Interior Retail — India" },
+    ],
   },
   2019: {
     era: "Multi-award year",
@@ -77,6 +106,12 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Awards", value: "4" },
       { label: "Categories", value: "Retail · Commercial" },
       { label: "Year", value: "2019" },
+    ],
+    awards: [
+      { icon: "trophy",    name: "FOAID Awards",            category: "Best Interior Retail (repeat)" },
+      { icon: "lightbulb", name: "SCCI Awards",             category: "Innovation Hub" },
+      { icon: "star",      name: "IA&B Young Designer",     category: "Best Commercial Interiors" },
+      { icon: "star",      name: "Creative Minds Next",     category: "Best Interiors Commercial" },
     ],
   },
   2020: {
@@ -91,6 +126,12 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Tech Briefs", value: "2 wins" },
       { label: "Category", value: "Pandemic Product" },
     ],
+    awards: [
+      { icon: "shield",    name: "D'Source — IIT Bombay",        category: "Winner — Product Solution for Pandemic" },
+      { icon: "shield",    name: "D'Source — IIT Bombay",        category: "Winner — Isolation Solution for Pandemic" },
+      { icon: "lightbulb", name: "Tech Briefs — Create the Future", category: "Most Popular Innovation — Medical" },
+      { icon: "lightbulb", name: "Tech Briefs — Create the Future", category: "Most Popular Innovation — Product Design" },
+    ],
   },
   2021: {
     era: "International stage",
@@ -103,6 +144,16 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Lexus", value: "3 wins" },
       { label: "Total", value: "8+ awards" },
       { label: "Year", value: "2021" },
+    ],
+    awards: [
+      { icon: "globe",    name: "Lexus Design Awards",  category: "Public Utility Design" },
+      { icon: "globe",    name: "Lexus Design Awards",  category: "Design Thinking" },
+      { icon: "globe",    name: "Lexus Design Awards",  category: "Product Design" },
+      { icon: "medal",    name: "Kyoorius Design Yatra", category: "Product Design" },
+      { icon: "building", name: "Eldrock Award",         category: "Best in Class — Residential & Public Space" },
+      { icon: "shield",   name: "BSI Awards",            category: "Winner — Prefab Structure" },
+      { icon: "ribbon",   name: "Mango Award",           category: "Reinventing Tents" },
+      { icon: "ribbon",   name: "Nestle India Award",    category: "Recognition — COVID Innovations" },
     ],
   },
   2022: {
@@ -117,6 +168,13 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Schneider", value: "3,000 sqft" },
       { label: "Format", value: "AI · IoT" },
     ],
+    awards: [
+      { icon: "trophy",    name: "Spaciux Platinum Awards",       category: "Large Work Space Design" },
+      { icon: "star",      name: "Young Designer of the Year",    category: "Commercial Design" },
+      { icon: "lightbulb", name: "Innovation at the Workspace",   category: "Commercial Design" },
+      { icon: "medal",     name: "A.C.E.D.",                      category: "Best Colour Palette — Commercial" },
+      { icon: "globe",     name: "Lexus Design Award",            category: "Finalist — Design Thinking" },
+    ],
   },
   2023: {
     era: "Top 40",
@@ -129,6 +187,13 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "IGEN", value: "Top 40" },
       { label: "FOAID", value: "India 10" },
       { label: "Industry", value: "Contractor of the Year" },
+    ],
+    awards: [
+      { icon: "ribbon",   name: "IGEN",                          category: "India's Top 40 Best Designer" },
+      { icon: "trophy",   name: "FOAID India 10",                category: "Interior Retail" },
+      { icon: "building", name: "Construction Week",             category: "Interior Contractor of the Year" },
+      { icon: "star",     name: "Architect & Interiors India",   category: "Future Design" },
+      { icon: "medal",    name: "Geevees",                       category: "Commercial Design" },
     ],
   },
   2024: {
@@ -143,6 +208,11 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "Milestone", value: "Tech Integration" },
       { label: "Format", value: "Spaceiux · FOAID" },
     ],
+    awards: [
+      { icon: "sparkles", name: "Design Milestone Award", category: "Innovative Technology Integration" },
+      { icon: "building", name: "Spaceiux",               category: "Shopping Space" },
+      { icon: "medal",    name: "FOAID",                  category: "Bronze" },
+    ],
   },
   2025: {
     era: "Twenty years",
@@ -155,6 +225,9 @@ const RUBENIUS_FALLBACKS: Record<
       { label: "FOAID", value: "On Going" },
       { label: "Year", value: "2025" },
       { label: "Anniversary", value: "20 years" },
+    ],
+    awards: [
+      { icon: "trophy", name: "FOAID", category: "On Going Project" },
     ],
   },
 };
@@ -290,7 +363,94 @@ interface ProcessedItem {
   title: string;
   description: string;
   stats: Array<{ label: string; value: string }>;
+  awards: AwardItem[];
   assets: Array<{ id: number; url: string; caption: string | null; month: number }>;
+}
+
+// Inline SVG paths for each award icon — minimal Lucide-style strokes
+function AwardIcon({ name }: { name: AwardIconName }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.6,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    width: 16,
+    height: 16,
+  };
+  switch (name) {
+    case "trophy":
+      return (
+        <svg {...common}>
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+          <path d="M4 22h16" />
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+        </svg>
+      );
+    case "medal":
+      return (
+        <svg {...common}>
+          <path d="m7.21 15-1.42-1.42a2.5 2.5 0 0 1 0-3.54L7.21 8.5" />
+          <path d="M9 8.5 12 5l3 3.5" />
+          <path d="M16.79 15l1.42-1.42a2.5 2.5 0 0 0 0-3.54L16.79 8.5" />
+          <path d="M14 12c1.5 0 3 1.5 3 3v6l-5-3-5 3v-6c0-1.5 1.5-3 3-3" />
+        </svg>
+      );
+    case "star":
+      return (
+        <svg {...common}>
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+        </svg>
+      );
+    case "ribbon":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="8" r="6" />
+          <path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12" />
+        </svg>
+      );
+    case "building":
+      return (
+        <svg {...common}>
+          <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
+          <path d="M9 22v-4h6v4" />
+          <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01" />
+        </svg>
+      );
+    case "lightbulb":
+      return (
+        <svg {...common}>
+          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+          <path d="M9 18h6" />
+          <path d="M10 22h4" />
+        </svg>
+      );
+    case "globe":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+          <path d="M2 12h20" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg {...common}>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+      );
+    case "sparkles":
+      return (
+        <svg {...common}>
+          <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+        </svg>
+      );
+  }
 }
 
 export default function TimelineContainer({ initialYears }: TimelineContainerProps) {
@@ -358,6 +518,7 @@ export default function TimelineContainer({ initialYears }: TimelineContainerPro
       title,
       description,
       stats,
+      awards: fallback?.awards ?? [],
       assets: item.assets || [],
     };
   }), [initialYears]);
@@ -598,7 +759,29 @@ export default function TimelineContainer({ initialYears }: TimelineContainerPro
                 <h2>{item.title}</h2>
                 <p>{item.description}</p>
 
-                {/* Optional Media Gallery inside cards */}
+                {/* Per-year award list — each with its own icon */}
+                {item.awards && item.awards.length > 0 && (
+                  <div className="card-awards">
+                    <div className="card-awards-label">
+                      Awards & Recognition · {item.awards.length}
+                    </div>
+                    <ul>
+                      {item.awards.map((award, aIdx) => (
+                        <li key={`award-${idx}-${aIdx}`} style={{ transitionDelay: `${0.75 + aIdx * 0.05}s` }}>
+                          <span className="award-icon">
+                            <AwardIcon name={award.icon} />
+                          </span>
+                          <div className="award-text">
+                            <span className="award-name">{award.name}</span>
+                            <span className="award-cat">{award.category}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Optional Media Gallery inside cards (DB-uploaded assets) */}
                 {item.assets && item.assets.length > 0 && (
                   <div className="card-media">
                     {item.assets.map((asset) => (

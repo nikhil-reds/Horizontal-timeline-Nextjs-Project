@@ -15,27 +15,27 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Achievement Tracker",
-    template: "%s | Achievement Tracker",
+    default: "Rubenius — Twenty Years of Interior Wellbeing",
+    template: "%s | Rubenius",
   },
   description:
-    "A personal year-by-year achievement tracker. Log your wins, gallery moments, and reflections — one year at a time.",
-  keywords: ["achievement tracker", "personal growth", "year review", "goals", "milestones"],
-  authors: [{ name: "Achievement Tracker" }],
-  creator: "Achievement Tracker",
+    "A year-by-year record of Rubenius Interiors — awards, milestones and the projects that shaped twenty years of experience-led design.",
+  keywords: ["Rubenius", "Rubenius Interiors", "experience design", "REDS", "interior design", "Bangalore", "FOAID"],
+  authors: [{ name: "Rubenius Interiors" }],
+  creator: "Rubenius Interiors",
   metadataBase: new URL("https://achievement-tracker.vercel.app"),
   openGraph: {
-    title: "Achievement Tracker",
+    title: "Rubenius — Twenty Years of Interior Wellbeing",
     description:
-      "A personal year-by-year achievement tracker. Log your wins, gallery moments, and reflections — one year at a time.",
+      "A year-by-year record of Rubenius Interiors — awards, milestones and the projects that shaped twenty years of experience-led design.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Achievement Tracker",
+    title: "Rubenius — Twenty Years of Interior Wellbeing",
     description:
-      "A personal year-by-year achievement tracker. Log your wins, gallery moments, and reflections — one year at a time.",
+      "A year-by-year record of Rubenius Interiors — awards, milestones and the projects that shaped twenty years of experience-led design.",
   },
   icons: {
     icon: "/favicon.ico",

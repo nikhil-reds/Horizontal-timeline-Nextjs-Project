@@ -1,5 +1,5 @@
 /* ============================================================
-   Foundry EPC Design System
+   Rubenius Timeline Design System
    colors_and_type.css + Timeline layout styles
 
    Built on the bones of HashiCorp's Helios Design System
@@ -72,9 +72,9 @@
   --color-purple-50:  #f9f2ff;
 
   /* -------- Brand identity -------- */
-  --brand-foundry:        #1f5897;
-  --brand-foundry-ink:    #0a2540;
-  --brand-foundry-mark:   #e88a16;
+  --brand-rubenius:       #1f5897;
+  --brand-rubenius-ink:   #0a2540;
+  --brand-rubenius-mark:  #e88a16;
   --brand-on-dark:        #5b9bdc;
 
   /* -------- Semantic: foreground -------- */

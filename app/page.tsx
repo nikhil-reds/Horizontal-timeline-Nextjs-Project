@@ -37,7 +37,7 @@ export default async function Home() {
     });
   } catch (error) {
     console.warn(
-      "Database connection could not be established or has not been initialized. Falling back to static Foundry timeline data.",
+      "Database connection could not be established or has not been initialized. Falling back to static Rubenius timeline data.",
       error
     );
   }

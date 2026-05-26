@@ -46,6 +46,30 @@ export default async function Home() {
     <main className="h-screen relative overflow-hidden bg-(--ink-2) text-(--text-1) select-none">
       <div className="timeline-backdrop" />
       <TimelineCanvas />
+
+      {/* Rubenius brand + REDS — top-right corner overlay */}
+      <a
+        href="https://www.rubenius.in/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="rb-brand"
+        aria-label="Rubenius Interiors — Rubenius Experiential Design System"
+      >
+        <span className="rb-mark" aria-hidden="true">
+          <img
+            src="https://cdn.prod.website-files.com/61bcac7a8c69b70a365c2b95/61bcd261bf0f713861a292f1_rubenius-logo.svg"
+            alt=""
+          />
+        </span>
+        <span className="rb-meta">
+          <span className="rb-reds">
+            <span className="rb-reds-dot" />
+            REDS<sup>™</sup>
+          </span>
+          <span className="rb-tag">Rubenius Experiential Design System</span>
+        </span>
+      </a>
+
       <TimelineContainer initialYears={dbYears} />
     </main>
   );

@@ -782,6 +782,65 @@
   object-fit: cover;
 }
 
+/* Video tiles render as <button> for accessibility — reset default UA chrome */
+button.media-piece {
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+button.media-piece:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Center play glyph overlay on video tiles */
+.media-piece.is-video::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.55));
+  pointer-events: none;
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+.media-piece.is-video:hover::before {
+  background: linear-gradient(180deg, rgba(232, 138, 22, 0.10), rgba(0, 0, 0, 0.65));
+}
+
+.media-piece .media-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink-2);
+  box-shadow:
+    0 12px 32px -6px rgba(232, 138, 22, 0.55),
+    0 0 0 6px rgba(232, 138, 22, 0.18);
+  z-index: 2;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.media-piece .media-play svg {
+  margin-left: 3px;
+}
+
+.media-piece.is-video:hover .media-play {
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow:
+    0 16px 40px -8px rgba(232, 138, 22, 0.7),
+    0 0 0 8px rgba(232, 138, 22, 0.22);
+}
+
 .media-piece.is-video {
   aspect-ratio: 4 / 5;
 }
@@ -1389,4 +1448,116 @@
   .rb-brand .rb-mark img { width: 18px; height: 18px; }
   .rb-brand .rb-reds { font-size: 13px; letter-spacing: 0.22em; }
   .rb-brand .rb-tag { display: none; }
+}
+
+/* ============================================================
+   Video Modal — opens when a video tile is clicked
+   ============================================================ */
+
+.video-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: rgba(4, 12, 24, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: videoModalIn 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes videoModalIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.video-modal-shell {
+  position: relative;
+  width: min(1080px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: videoShellIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes videoShellIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.video-modal-close {
+  position: absolute;
+  top: -52px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-1);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.video-modal-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: rotate(90deg);
+}
+
+.video-modal-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #04101e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 40px 100px -30px rgba(0, 0, 0, 0.8),
+    0 16px 32px -16px rgba(232, 138, 22, 0.18);
+}
+
+.video-modal-player iframe,
+.video-modal-player video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.video-modal-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-1);
+  text-align: left;
+}
+
+.video-modal-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brand-rubenius-green, var(--accent));
+}
+
+.video-modal-caption h3 {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--text-1);
+  text-wrap: balance;
+}
+
+@media (max-width: 720px) {
+  .video-modal-backdrop { padding: 16px; }
+  .video-modal-close { top: -44px; width: 36px; height: 36px; }
 }

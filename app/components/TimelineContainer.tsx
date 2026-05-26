@@ -232,11 +232,24 @@ const RUBENIUS_FALLBACKS: Record<
   },
 };
 
-// Floating media collage shown around each year's card (Unsplash + a few sample videos)
+// Floating media collage shown around each year's card
 type MediaSlot = "tl" | "tr" | "bl" | "br" | "ml" | "mr";
 type Media =
   | { type: "image"; url: string; alt: string; pos: MediaSlot }
-  | { type: "video"; url: string; poster?: string; alt: string; pos: MediaSlot };
+  | {
+      type: "video";
+      poster: string;          // thumbnail (Rubenius CDN image)
+      alt: string;
+      pos: MediaSlot;
+      embedUrl?: string;       // YouTube / Vimeo iframe URL
+      videoUrl?: string;       // direct .mp4 URL
+      title?: string;          // shown above the player in the modal
+    };
+
+// Rubenius YouTube uploads playlist — every upload from their channel, autoplayed in order.
+// Swap the list ID for a specific video by changing this URL to: https://www.youtube.com/embed/VIDEO_ID?autoplay=1&rel=0
+const RUBENIUS_YT_EMBED =
+  "https://www.youtube.com/embed/videoseries?list=UUJa1fnQh9duhYEBD4VKfWKQ&autoplay=1&rel=0&modestbranding=1";
 
 // Rubenius CDN assets — extracted from rubenius.in
 const R_CDN = "https://cdn.prod.website-files.com/61bcac7a8c69b70a365c2b95";
@@ -297,7 +310,14 @@ const RUBENIUS_MEDIA: Record<number, Media[]> = {
     { type: "image", url: RB.redsShift17, alt: "REDS Shift — pandemic", pos: "tl" },
     { type: "image", url: RB.redsShift21, alt: "Pandemic product solution", pos: "tr" },
     { type: "image", url: RB.untitled3, alt: "D'Source winning design", pos: "bl" },
-    { type: "image", url: RB.redsShift12, alt: "REDS Shift — distance", pos: "br" },
+    {
+      type: "video",
+      poster: RB.redsShift12,
+      alt: "Watch — Pandemic product walkthrough",
+      title: "Pandemic product — Rubenius walkthrough",
+      embedUrl: RUBENIUS_YT_EMBED,
+      pos: "br",
+    },
   ],
   2021: [
     { type: "image", url: RB.redsShift21, alt: "Lexus public-utility design", pos: "tl" },
@@ -306,7 +326,14 @@ const RUBENIUS_MEDIA: Record<number, Media[]> = {
     { type: "image", url: RB.scaler, alt: "Design thinking", pos: "br" },
   ],
   2022: [
-    { type: "image", url: RB.schneiderCase, alt: "Schneider Experience Centre", pos: "tl" },
+    {
+      type: "video",
+      poster: RB.schneiderCase,
+      alt: "Watch — Schneider Experience Centre tour",
+      title: "Schneider Electric — Experience Centre tour",
+      embedUrl: RUBENIUS_YT_EMBED,
+      pos: "tl",
+    },
     { type: "image", url: RB.schneider9, alt: "Schneider — voice AI", pos: "tr" },
     { type: "image", url: RB.schneider8, alt: "Schneider — parametric audio", pos: "bl" },
     { type: "image", url: RB.schneider14, alt: "Schneider — anamorphic lighting", pos: "br" },
@@ -320,7 +347,14 @@ const RUBENIUS_MEDIA: Record<number, Media[]> = {
   2024: [
     { type: "image", url: RB.schneider10, alt: "Schneider — IoT integration", pos: "tl" },
     { type: "image", url: RB.schneider14, alt: "Technology integration", pos: "tr" },
-    { type: "image", url: RB.schneider23, alt: "Spaceiux shopping space", pos: "bl" },
+    {
+      type: "video",
+      poster: RB.schneider23,
+      alt: "Watch — Interactive technology showcase",
+      title: "Technology integration — Design Milestone showcase",
+      embedUrl: RUBENIUS_YT_EMBED,
+      pos: "bl",
+    },
     { type: "image", url: RB.schneiderCard, alt: "Innovative experience centre", pos: "br" },
   ],
   2025: [
@@ -463,6 +497,21 @@ export default function TimelineContainer({ initialYears }: TimelineContainerPro
   });
   const [ghostLefts, setGhostLefts] = useState<number[]>([]);
   const [activeMedia, setActiveMedia] = useState<{ url: string; caption: string | null } | null>(null);
+  const [activeVideo, setActiveVideo] = useState<{
+    embedUrl?: string;
+    videoUrl?: string;
+    title: string;
+  } | null>(null);
+
+  // Close the video modal on Escape
+  useEffect(() => {
+    if (!activeVideo) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveVideo(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeVideo]);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -708,47 +757,64 @@ export default function TimelineContainer({ initialYears }: TimelineContainerPro
             </div>
             <div className="body">
               {/* Floating media collage around the card */}
-              <div className="media-floats" aria-hidden="true">
-                {(RUBENIUS_MEDIA[item.year] || []).map((m, mi) => (
-                  <figure
-                    key={`media-${item.year}-${mi}`}
-                    className={`media-piece pos-${m.pos} ${m.type === "video" ? "is-video" : "is-image"}`}
-                    style={{ animationDelay: `${mi * 90}ms` }}
-                  >
-                    {m.type === "image" ? (
+              <div className="media-floats">
+                {(RUBENIUS_MEDIA[item.year] || []).map((m, mi) => {
+                  if (m.type === "image") {
+                    return (
+                      <figure
+                        key={`media-${item.year}-${mi}`}
+                        className={`media-piece pos-${m.pos} is-image`}
+                        style={{ animationDelay: `${mi * 90}ms` }}
+                        aria-hidden="true"
+                      >
+                        <img
+                          src={m.url}
+                          alt={m.alt}
+                          loading="lazy"
+                          onError={(e) => {
+                            (e.currentTarget.parentElement as HTMLElement).style.display = "none";
+                          }}
+                        />
+                      </figure>
+                    );
+                  }
+                  return (
+                    <button
+                      key={`media-${item.year}-${mi}`}
+                      type="button"
+                      className={`media-piece pos-${m.pos} is-video`}
+                      style={{ animationDelay: `${mi * 90}ms` }}
+                      aria-label={m.alt}
+                      onClick={() =>
+                        setActiveVideo({
+                          embedUrl: m.embedUrl,
+                          videoUrl: m.videoUrl,
+                          title: m.title ?? m.alt,
+                        })
+                      }
+                    >
                       <img
-                        src={m.url}
-                        alt={m.alt}
+                        src={m.poster}
+                        alt=""
                         loading="lazy"
                         onError={(e) => {
                           (e.currentTarget.parentElement as HTMLElement).style.display = "none";
                         }}
                       />
-                    ) : (
-                      <video
-                        src={m.url}
-                        poster={m.poster}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="metadata"
-                        aria-label={m.alt}
-                        onError={(e) => {
-                          (e.currentTarget.parentElement as HTMLElement).style.display = "none";
-                        }}
-                      />
-                    )}
-                    {m.type === "video" && (
+                      <span className="media-play" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </span>
                       <span className="media-badge" aria-hidden="true">
                         <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor">
                           <path d="M8 5v14l11-7z" />
                         </svg>
-                        LIVE
+                        WATCH
                       </span>
-                    )}
-                  </figure>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
 
               <div className="card">
@@ -867,6 +933,47 @@ export default function TimelineContainer({ initialYears }: TimelineContainerPro
                 {activeMedia.caption}
               </p>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Video Modal — opens when a video tile is clicked */}
+      {activeVideo && (
+        <div
+          className="video-modal-backdrop"
+          onClick={() => setActiveVideo(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeVideo.title}
+        >
+          <div className="video-modal-shell" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="video-modal-close"
+              onClick={() => setActiveVideo(null)}
+              aria-label="Close video"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                <line x1={18} y1={6} x2={6} y2={18} />
+                <line x1={6} y1={6} x2={18} y2={18} />
+              </svg>
+            </button>
+            <div className="video-modal-player">
+              {activeVideo.embedUrl ? (
+                <iframe
+                  src={activeVideo.embedUrl}
+                  title={activeVideo.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : activeVideo.videoUrl ? (
+                <video src={activeVideo.videoUrl} controls autoPlay playsInline />
+              ) : null}
+            </div>
+            <div className="video-modal-caption">
+              <span className="video-modal-eyebrow">Rubenius · REDS</span>
+              <h3>{activeVideo.title}</h3>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { assets as allAssets } from "@/app/lib/data";
 
 export async function GET(
   request: Request,
@@ -13,10 +13,9 @@ export async function GET(
   }
 
   try {
-    const assets = await prisma.asset.findMany({
-      where: { yearId },
-      orderBy: { month: "asc" },
-    });
+    const assets = allAssets
+      .filter((a) => a.yearId === yearId)
+      .sort((a, b) => a.month - b.month);
 
     return NextResponse.json(assets);
   } catch (error) {

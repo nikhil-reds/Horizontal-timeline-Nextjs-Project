@@ -40,7 +40,7 @@ export default function GoghWithTheFlowPage() {
         <iframe
           src="/goghwiththeflow/index.html"
           className="w-full h-full border-0 select-none"
-          title="GoghWithTheFlow - Metropolitan Museum of Art exploration"
+          title="Rubenius Interiors - Twenty Years of Interior Wellbeing"
           allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
           sandbox="allow-scripts allow-same-origin allow-downloads allow-forms"
         />

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { achievements as allAchievements } from "@/app/lib/data";
 
 export async function GET(
   request: Request,
@@ -13,10 +13,9 @@ export async function GET(
   }
 
   try {
-    const achievements = await prisma.achievement.findMany({
-      where: { yearId },
-      orderBy: { date: "desc" },
-    });
+    const achievements = allAchievements
+      .filter((a) => a.yearId === yearId)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return NextResponse.json(achievements);
   } catch (error) {

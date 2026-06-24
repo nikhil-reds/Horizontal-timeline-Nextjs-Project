@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { years } from "@/app/lib/data";
 
 export async function GET(
   request: Request,
@@ -13,9 +13,7 @@ export async function GET(
   }
 
   try {
-    const yearData = await prisma.year.findUnique({
-      where: { year: yearValue },
-    });
+    const yearData = years.find((y) => y.year === yearValue);
 
     if (!yearData) {
       return NextResponse.json({ error: "Year not found" }, { status: 404 });

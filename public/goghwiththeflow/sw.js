@@ -1,4 +1,4 @@
-const CACHE_NAME = 'goghwiththeflow-v1';
+const CACHE_NAME = 'goghwiththeflow-v2';
 const urlsToCache = [
 	'./',
 	'./index.html',

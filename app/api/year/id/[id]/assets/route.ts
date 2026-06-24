@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { assets as allAssets } from "@/app/lib/data";
+import { assets as allAssets } from "@/constants/data";
 
 export async function GET(
   request: Request,

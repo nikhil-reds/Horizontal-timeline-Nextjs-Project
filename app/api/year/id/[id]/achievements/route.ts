@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { achievements as allAchievements } from "@/app/lib/data";
+import { achievements as allAchievements } from "@/constants/data";
 
 export async function GET(
   request: Request,

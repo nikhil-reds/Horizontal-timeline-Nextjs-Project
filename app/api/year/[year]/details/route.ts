@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { years } from "@/app/lib/data";
+import { years } from "@/constants/data";
 
 export async function GET(
   request: Request,

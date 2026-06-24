@@ -1,7 +1,7 @@
 import { prisma } from "./lib/prisma";
 import TimelineCanvas from "./components/TimelineCanvas";
 import TimelineContainer from "./components/TimelineContainer";
-import AddAchievement from "./components/AddAchievement";
+import Link from "next/link";
 
 export const revalidate = 0; // Disable static rendering caching to allow dynamic updates
 
@@ -71,7 +71,15 @@ export default async function Home() {
         </span>
       </a>
 
-      <AddAchievement />
+      {/* Explore MET Art Gallery Link */}
+      <Link
+        href="/goghwiththeflow"
+        className="explore-met-btn"
+        aria-label="Explore Metropolitan Museum of Art's Collection"
+      >
+        <span className="btn-icon">🎨</span>
+        <span className="btn-text">Explore MET Gallery</span>
+      </Link>
 
       <TimelineContainer initialYears={dbYears} />
     </main>

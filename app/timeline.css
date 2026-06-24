@@ -1802,3 +1802,63 @@ button.media-piece:focus-visible {
     max-height: 140px;
   }
 }
+
+/* ============================================================
+   Explore MET Gallery Button — top-right corner, below brand
+   ============================================================ */
+
+.explore-met-btn {
+  position: fixed;
+  top: 116px;
+  right: 36px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: rgba(6, 26, 48, 0.55);
+  border: 1px solid rgba(232, 138, 22, 0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-decoration: none;
+  color: var(--text-1);
+  pointer-events: auto;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 12px 32px -16px rgba(232, 138, 22, 0.25),
+    0 4px 16px -6px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s cubic-bezier(.2,.7,.2,1), border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.explore-met-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(232, 138, 22, 0.5);
+  color: var(--color-amber-300);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.07) inset,
+    0 18px 40px -16px rgba(232, 138, 22, 0.45),
+    0 6px 18px -6px rgba(0, 0, 0, 0.55);
+}
+
+.explore-met-btn .btn-icon {
+  font-size: 14px;
+  display: inline-block;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .explore-met-btn {
+    top: 88px;
+    right: 16px;
+    padding: 8px 14px;
+    font-size: 9.5px;
+    gap: 8px;
+  }
+}
+

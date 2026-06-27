@@ -62,7 +62,7 @@
 			<div class="photo photo-${_+1} ${y.isVideo ? 'video-photo' : ''}" data-id="${y.objectID}" data-object-url="${y.objectURL}" style="position: absolute; top: ${h}px; left: ${m}px; max-width: ${p.width}px; max-height: ${p.height}px; width: auto; height: auto;">
 				<div class="img-wrapper">
 					${y.isVideo ? `
-						<iframe class="video-iframe" src="${y.embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; border: none; outline: none;"></iframe>
+						<iframe class="video-iframe" src="${y.embedUrl}?autoplay=1&mute=1&controls=1&loop=1&playlist=${y.embedUrl.split('/').pop().split('?')[0]}&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; border: none; outline: none;"></iframe>
 						<div class="video-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); z-index: 10;">
 							<img src="${y.primaryImageSmall}" loading="lazy" alt="${y.title} by ${y.artistDisplayName} (${y.objectDate})" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;" />
 							<div class="play-button" style="position: absolute; font-size: 48px; color: white; opacity: 0.8; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); pointer-events: none;">▶</div>

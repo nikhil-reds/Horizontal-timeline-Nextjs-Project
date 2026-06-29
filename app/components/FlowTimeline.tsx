@@ -7,21 +7,21 @@ export default function FlowTimeline() {
     // Inject Cinzel font
     const fontLink = document.createElement("link");
     fontLink.rel = "stylesheet";
-    fontLink.href = "https://fonts.googleapis.com/css2?family=Cinzel&display=swap";
+    fontLink.href = "https://fonts.googleapis.com/css2?family=Cinzel&family=Inter:wght@400;500;700&display=swap";
     document.head.appendChild(fontLink);
 
     // Inject compiled timeline stylesheet
     const cssLink = document.createElement("link");
     cssLink.rel = "stylesheet";
     cssLink.crossOrigin = "anonymous";
-    cssLink.href = "/goghwiththeflow/assets/index-rubenius.css?v=3";
+    cssLink.href = "/goghwiththeflow/assets/index-rubenius.css?v=6";
     document.head.appendChild(cssLink);
 
     // Inject compiled timeline script
     const script = document.createElement("script");
     script.type = "module";
     script.crossOrigin = "anonymous";
-    script.src = "/goghwiththeflow/assets/index-rubenius.js?v=3";
+    script.src = "/goghwiththeflow/assets/index-rubenius.js?v=6";
     document.head.appendChild(script);
 
     return () => {

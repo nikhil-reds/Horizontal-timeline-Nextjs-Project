@@ -14,14 +14,14 @@ export default function FlowTimeline() {
     const cssLink = document.createElement("link");
     cssLink.rel = "stylesheet";
     cssLink.crossOrigin = "anonymous";
-    cssLink.href = "/goghwiththeflow/assets/index-rubenius.css?v=6";
+    cssLink.href = "/goghwiththeflow/assets/index-rubenius.css?v=10";
     document.head.appendChild(cssLink);
 
     // Inject compiled timeline script
     const script = document.createElement("script");
     script.type = "module";
     script.crossOrigin = "anonymous";
-    script.src = "/goghwiththeflow/assets/index-rubenius.js?v=6";
+    script.src = "/goghwiththeflow/assets/index-rubenius.js?v=10";
     document.head.appendChild(script);
 
     return () => {

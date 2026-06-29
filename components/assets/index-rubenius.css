@@ -58,3 +58,18 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   font-weight: 400;
 }
 
+/* Timeline Card Resize Controller Styles */
+/* Card Free Resizing Drag Handles Styles */
+.photo .drag-handle {
+  display: block;
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+.photo:hover .drag-handle {
+  opacity: 1;
+}
+.photo .drag-handle:hover {
+  background: rgba(173, 148, 62, 0.4);
+}
+

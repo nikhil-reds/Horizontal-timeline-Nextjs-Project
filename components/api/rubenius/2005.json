@@ -51,16 +51,16 @@
     "objectID": 20053,
     "primaryImage": "/goghwiththeflow/images/rubenius/redsShift17.png",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/redsShift17.png",
-    "title": "REDS Shift — practice",
+    "title": "Watch — REDS Shift — practice",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "Founded: 2005 • HQ: Bangalore • Discipline: Experience design",
     "department": "Founded",
     "objectDate": "2005",
     "medium": "The studio begins with a single conviction: space is a business instrument, not decoration. The Interior Wellbeing™ philosophy takes root here and quietly sets the foundation for what becomes the REDS methodology.",
     "dimensions": "General Milestone",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Studio origin and methodology",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

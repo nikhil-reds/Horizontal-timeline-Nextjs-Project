@@ -51,16 +51,16 @@
     "objectID": 20193,
     "primaryImage": "/goghwiththeflow/images/rubenius/redsShift21.png",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/redsShift21.png",
-    "title": "REDS Shift — innovation",
+    "title": "Watch — REDS Shift — innovation",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "Awards: 4 • Categories: Retail · Commercial • Year: 2019",
     "department": "Awards",
     "objectDate": "2019",
     "medium": "Back-to-back FOAID wins for retail are joined by Young Designer and Creative Minds awards for commercial interiors. The studio's commercial practice gains momentum.",
     "dimensions": "FOAID Awards — Best Interior Retail (repeat) | SCCI Awards — Innovation Hub | IA&B Young Designer — Best Commercial Interiors | Creative Minds Next — Best Interiors Commercial",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Commercial design showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

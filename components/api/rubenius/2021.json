@@ -51,16 +51,16 @@
     "objectID": 20213,
     "primaryImage": "/goghwiththeflow/images/rubenius/scaler.jpg",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/scaler.jpg",
-    "title": "Design thinking",
+    "title": "Watch — Design thinking",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "Lexus: 3 wins • Total: 8+ awards • Year: 2021",
     "department": "Lexus",
     "objectDate": "2021",
     "medium": "Lexus recognises the studio across Public Utility Design, Design Thinking and Product Design. Kyoorius Design Yatra adds a product win. Eldrock honours residential public space. BSI, Mango and Nestle round out a record year.",
     "dimensions": "Lexus Design Awards — Public Utility Design | Lexus Design Awards — Design Thinking | Lexus Design Awards — Product Design | Kyoorius Design Yatra — Product Design | Eldrock Award — Best in Class — Residential & Public Space | BSI Awards — Winner — Prefab Structure | Mango Award — Reinventing Tents | Nestle India Award — Recognition — COVID Innovations",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Public-utility showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

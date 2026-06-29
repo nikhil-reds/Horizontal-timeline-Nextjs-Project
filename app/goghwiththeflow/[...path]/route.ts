@@ -36,10 +36,15 @@ export async function GET(
 
     const fileBuffer = fs.readFileSync(fileFullPath);
     
+    const isImage = [".png", ".jpg", ".jpeg", ".webp", ".svg", ".avif", ".ico"].includes(ext);
+    const cacheControl = isImage 
+      ? "public, max-age=31536000, immutable"
+      : "no-cache, no-store, must-revalidate";
+
     return new NextResponse(fileBuffer, {
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "public, max-age=31536000, immutable",
+        "Cache-Control": cacheControl,
       },
     });
   } catch (error) {

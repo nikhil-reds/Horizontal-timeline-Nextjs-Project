@@ -51,16 +51,16 @@
     "objectID": 20253,
     "primaryImage": "/goghwiththeflow/images/rubenius/redsShift12.png",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/redsShift12.png",
-    "title": "REDS — still shaping memory",
+    "title": "Watch — REDS — still shaping memory",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "FOAID: On Going • Year: 2025 • Anniversary: 20 years",
     "department": "Current",
     "objectDate": "2025",
     "medium": "A project still in motion enters the FOAID circuit. Twenty years on, the practice continues to treat every brief as a chance to shape how a brand is remembered.",
     "dimensions": "FOAID — On Going Project",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: 20 years milestone showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

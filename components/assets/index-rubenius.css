@@ -3,14 +3,19 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /* Rubenius Video Support CSS */
 .photo.video-photo .video-overlay {
-  display: none !important;
+  display: flex !important;
+  pointer-events: none;
 }
 .photo.video-photo.fullscreen .video-overlay {
   display: none !important;
 }
 .photo.video-photo .video-iframe {
-  pointer-events: auto;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 .photo.video-photo.fullscreen .video-iframe {
+  opacity: 1;
   pointer-events: auto;
 }
+

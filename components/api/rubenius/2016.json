@@ -51,16 +51,16 @@
     "objectID": 20163,
     "primaryImage": "/goghwiththeflow/images/rubenius/redsShift21.png",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/redsShift21.png",
-    "title": "REDS Shift — recognition",
+    "title": "Watch — REDS Shift — recognition",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "Award: IQA • Region: Karnataka • Also: Nispana",
     "department": "IQA",
     "objectDate": "2016",
     "medium": "Eleven years of work earns the studio its first major regional honour. A Nispana Innovative Award for sustainable smart-cities work lands in the same year.",
     "dimensions": "IQA Award — Excellence in Interior Designing Services — Karnataka | Nispana Innovative — Sustainable Smart Cities Innovations",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Karnataka practice showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

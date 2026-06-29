@@ -51,16 +51,16 @@
     "objectID": 20173,
     "primaryImage": "/goghwiththeflow/images/rubenius/untitled3.webp",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/untitled3.webp",
-    "title": "Smart green workplace",
+    "title": "Watch — Smart green workplace",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "FOAID: Best Villa • Recognition: ET Top 5 • Theme: Smart Green",
     "department": "FOAID",
     "objectDate": "2017",
     "medium": "The studio's first national FOAID win lands for a large villa interior. The Economic Times also recognises Rubenius among India's Top 5 Smart Green Workplaces.",
     "dimensions": "FOAID Awards — Best Residential Villa Large | ET Smart Green Summit — Top 5 Smart Green Workplaces",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Smart green workplace showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

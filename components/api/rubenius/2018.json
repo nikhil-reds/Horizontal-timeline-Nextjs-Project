@@ -51,16 +51,16 @@
     "objectID": 20183,
     "primaryImage": "/goghwiththeflow/images/rubenius/schneiderCase.avif",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/schneiderCase.avif",
-    "title": "Experience design",
+    "title": "Watch — Experience design",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "FOAID: Best Retail • Scope: India • Discipline: Retail",
     "department": "Retail",
     "objectDate": "2018",
     "medium": "The studio's first national retail design award. Retail emerges as a strategic discipline within the practice — each store treated as a brand environment, not a fixture programme.",
     "dimensions": "FOAID Awards — Best Interior Retail — India",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Retail experience showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]

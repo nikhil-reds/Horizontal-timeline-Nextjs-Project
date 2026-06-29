@@ -51,16 +51,16 @@
     "objectID": 20233,
     "primaryImage": "/goghwiththeflow/images/rubenius/schneider13.webp",
     "primaryImageSmall": "/goghwiththeflow/images/rubenius/schneider13.webp",
-    "title": "Interior contracting craft",
+    "title": "Watch — Interior contracting craft",
     "artistDisplayName": "Rubenius Interiors",
     "artistDisplayBio": "IGEN: Top 40 • FOAID: India 10 • Industry: Contractor of the Year",
     "department": "Industry",
     "objectDate": "2023",
     "medium": "Construction Week names Rubenius Interior Contractor of the Year. Architect & Interiors India recognises the studio for Future Design. FOAID's India 10 names it among the country's top retail interior practices.",
     "dimensions": "IGEN — India's Top 40 Best Designer | FOAID India 10 — Interior Retail | Construction Week — Interior Contractor of the Year | Architect & Interiors India — Future Design | Geevees — Commercial Design",
-    "creditLine": "Rubenius Experiential Design System (REDS)",
+    "creditLine": "Video Embed: Top 40 showcase",
     "objectURL": "https://www.rubenius.in",
-    "isVideo": false,
-    "embedUrl": null
+    "isVideo": true,
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
   }
 ]
